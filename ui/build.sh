@@ -7,6 +7,11 @@ DX_OUT="${SCRIPT_DIR}/target/dx/my-no-sql-ui/release/web/public"
 
 cd "${SCRIPT_DIR}"
 
+# dx never clears its output folder, so the bundles of every previous build pile
+# up there under old hashes - and would all be copied into wwwroot below.
+echo ">> cleaning ${DX_OUT}"
+rm -rf "${DX_OUT}"
+
 echo ">> dx build --release --web"
 dx build --release --web
 
