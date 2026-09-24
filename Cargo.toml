@@ -1,0 +1,73 @@
+[package]
+name = "my_no_sql_server"
+version = "0.0.22"
+authors = ["amigin <amigin@gmail.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+my-http-server = { tag = "0.9.0", git = "https://github.com/MyJetTools/my-http-server.git", features = [
+    "macros",
+    "controllers",
+    "static-files",
+] }
+
+my-http-utils = { tag = "0.1.0", git = "https://github.com/MyJetTools/my-http-utils.git", features = [
+    "server",
+] }
+
+my-no-sql-sdk = { tag = "0.5.1", git = "https://github.com/my-jet-tools/my-no-sql-sdk.git", features = [
+    "master-node",
+    "tcp-contracts",
+] }
+
+
+my-azure-storage-sdk = { tag = "0.5.1", git = "https://github.com/MyJetTools/my-azure-storage.git" }
+flurl = { tag = "0.7.0", git = "https://github.com/MyJetTools/fl-url" }
+
+my-logger = { tag = "1.3.0", git = "https://github.com/MyJetTools/my-logger.git" }
+
+my-tcp-sockets = { tag = "0.1.12", git = "https://github.com/my-jet-tools/my-tcp-sockets.git" }
+
+mcp-server-middleware = { tag = "0.9.0", git = "https://github.com/my-ai-utils/mcp-server-middleware.git" }
+
+my-ai-agent = { tag = "0.1.0", git = "https://github.com/my-ai-utils/my-ai-agent.git", features = [
+    "agent",
+] }
+
+
+tonic = { version = "*" }
+tonic-prost = "*"
+anyhow = "*"
+tokio = { version = "*", features = ["full"] }
+prost = "*"
+serde = { version = "*", features = ["derive"] }
+tokio-util = "*"
+futures = "*"
+chrono = "*"
+futures-util = { version = "*" }
+futures-core = { version = "*" }
+futures-channel = "*"
+serde_json = "*"
+serde_derive = "*"
+quick-xml = "*"
+lazy_static = "*"
+hmac = "0.12"
+base64 = "*"
+serde_yaml = "*"
+uuid = { version = "*", features = ["serde", "v4"] }
+prometheus = "*"
+async-trait = "*"
+tokio-stream = "*"
+zip = { version = "*", default-features = false, features = ["deflate"] }
+zstd = "*"
+crc32fast = "*"
+ahash = "*"
+arc-swap = "*"
+
+mimalloc = { version = "*", features = ["override"] }
+
+
+[build-dependencies]
+ci-utils = { git = "https://github.com/MyJetTools/ci-utils.git", tag = "0.1.3" }

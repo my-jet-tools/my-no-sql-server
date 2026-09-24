@@ -1,0 +1,100 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+package mynosqlserver;
+
+enum TransactionType {
+    CleanTable = 0;
+    DeletePartitions = 1;
+    DeleteRows = 2;
+    InsertOrReplaceEntities = 3;
+}
+
+enum TransactionOperationResult{
+    Ok = 0;
+    TransactionNotFound =1;
+    TableNotFound = 2;
+}
+
+ message TransactionActionGrpcModel {
+    TransactionType TransactionType = 1;
+    bytes Payload = 2;
+}
+
+
+message TransactionPayloadGrpcRequest{
+    optional string TransactionId = 1;
+    repeated TransactionActionGrpcModel Actions = 2;
+    bool Commit = 3;
+    optional string NameSpace = 4;
+}
+
+message TransactionGrpcResponse{
+    TransactionOperationResult result =1;
+    string Id = 2;
+}
+
+message CreateTableIfNotExistsGrpcRequest{
+    string TableName = 1;
+    bool PersistTable = 2;
+    optional int32 MaxPartitionsAmount = 3;
+    optional int32 MaxRowsPerPartitionAmount = 4;
+    optional string NameSpace = 5;
+}
+
+message SetTableAttributesGrpcRequest{
+    string TableName = 1;
+    optional int32 MaxPartitionsAmount = 2;
+    optional int32 MaxRowsPerPartitionAmount = 3;
+    optional string NameSpace = 4;
+}
+
+message GetEntitiesGrpcRequest{
+    string TableName = 1;
+    optional string PartitionKey = 2;
+    optional string RowKey = 3;
+    optional int32 Skip = 4;
+    optional int32 Limit = 5;
+
+    optional bool UpdatePartitionLastReadTime = 6;
+    optional string SetPartitionExpirationTime = 7;
+    optional bool UpdateRowsLastReadTime = 8;
+    optional string SetRowsExpirationTime = 9;
+    optional string NameSpace = 10;
+}
+
+message TableEntityTransportGrpcContract{
+    int32 ContentType = 1;
+    bytes Content = 2;
+
+
+}
+
+message GetDbRowGrpcResponse{
+    int32 ResponseCode = 1;
+    optional TableEntityTransportGrpcContract Entity = 2;
+}
+
+message GetEntityGrpcRequest{
+    string TableName = 1;
+    string PartitionKey = 2;
+    string RowKey = 3;
+    optional bool UpdatePartitionLastReadTime = 4;
+    optional string SetPartitionExpirationTime = 5;
+    optional bool UpdateRowsLastReadTime = 6;
+    optional string SetRowsExpirationTime = 7;
+    optional string NameSpace = 8;
+}
+
+message CancelTransactionGrpcRequest{
+    string Id = 1;
+}
+
+
+service Writer{
+    rpc CreateTableIfNotExists(CreateTableIfNotExistsGrpcRequest) returns (google.protobuf.Empty);
+    rpc SetTableAttributes(SetTableAttributesGrpcRequest) returns (google.protobuf.Empty);
+    rpc GetRows(GetEntitiesGrpcRequest) returns (stream TableEntityTransportGrpcContract);
+    rpc GetRow(GetEntityGrpcRequest) returns (GetDbRowGrpcResponse);
+    rpc PostTransactionActions(TransactionPayloadGrpcRequest) returns (TransactionGrpcResponse);
+    rpc CancelTransaction(CancelTransactionGrpcRequest) returns (google.protobuf.Empty);
+}

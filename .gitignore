@@ -1,0 +1,8 @@
+**/target
+**/Cargo.lock
+.vscode
+.claude
+.idea
+**/.DS_Store
+**/node_modules
+.mcp.json
